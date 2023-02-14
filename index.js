@@ -60,10 +60,10 @@ charactersMap.forEach((row, i) => {
 			},
 			scale: 3,
 			animate: true,
-			introDialogue: ['My bones hurt.'],
-			errorDialogue: ['otday'],
-			endDialogue: ['end'],
-			outroDialogue: ['outro.']
+			introDialogue: ['Hey there boy, what do you need?', '*watches the receipt*', 'I will give you milk if you bring me the flower', 'I like flowers so much...'],
+			errorDialogue: ["I'm waiting for the flower"],
+			endDialogue: ['Thank you boy! Here your milk!', "By the way, there're apples in your receipt...", "You can find apples in the apple orchad!", "You got the milk!"],
+			outroDialogue: ["Apples are in apple orchad"]
 		  })
 		)
 	  }
@@ -83,10 +83,10 @@ charactersMap.forEach((row, i) => {
 			},
 			scale: 3,
 			animate: true,
-			introDialogue: ['My bones hurt.'],
-			errorDialogue: ['ты чорт'],
-			endDialogue: ['end'],
-			outroDialogue: ['outro.']
+			introDialogue: ['Hey! Where are you going?!', 'You scared my chicken!!!', "Where is it?"],
+			errorDialogue: ["Don't come back without a chicken!!!"],
+			endDialogue: ['Wait, this handwriting...', "Are you came to grandma? You need to bring eggs to her?", "Here, take them, they're yours. I also see you need milk, Frank has it!", "You got the eggs!"],
+			outroDialogue: ['Frank has a milk']
 		  })
 		)
 	  }
@@ -106,10 +106,10 @@ charactersMap.forEach((row, i) => {
 			},
 			scale: 3,
 			animate: true,
-			introDialogue: ['My bones hurt.'],
-			errorDialogue: ['EE', 'kk'],
-			endDialogue: ['end'],
-			outroDialogue: ['outro.']
+			introDialogue: ['Good morning, grandson', "I wanna make you a surprise, but you need to bring me something for it", "You got the receipt!"],
+			errorDialogue: ["You didn't bring all the items"],
+			endDialogue: ['You brought everything!', 'Wait a little bit...'],
+			outroDialogue: ['']
 		  })
 		)
 	  }
@@ -130,10 +130,7 @@ itemZonesMap.forEach((row, i) => {
 				},
 				image: itemImg,
 				scale: 1,
-				introDialogue: ['Вы сорвали цветы'],
-				errorDialogue: ['err'],
-				endDialogue: ['end'],
-				outroDialogue: ['outro.']
+				introDialogue: ['You took the flowers!']
 			  })
 			)
 		  }
@@ -147,10 +144,7 @@ itemZonesMap.forEach((row, i) => {
 				},
 				image: itemImg,
 				scale: 1,
-				introDialogue: ['Вы подняли яблоко'],
-				errorDialogue: ['err'],
-				endDialogue: ['end'],
-				outroDialogue: ['outro.']
+				introDialogue: ['You took the apple!']
 			  })
 			)
 		  } else if (symbol === 422) {
@@ -163,10 +157,7 @@ itemZonesMap.forEach((row, i) => {
 				  },
 				  image: itemImg,
 				  scale: 1,
-				  introDialogue: ['Вы схватили курицу'],
-				  errorDialogue: ['err'],
-				  endDialogue: ['end'],
-				  outroDialogue: ['outro.']
+				  introDialogue: ['You took the chicken!']
 				})
 			  )
 		  }

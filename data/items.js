@@ -3,5 +3,6 @@ let itemsData = {
     apple: false,
     milk: false,
     egg: false,
-    chiken: false
+    chicken: false,
+    receipt: false
 }

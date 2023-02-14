@@ -1,5 +1,6 @@
 let lastKey = "";
 
+let inventory = itemsData;
 
 window.addEventListener("keydown", (e) => {
 	if (player.isInteracting) {
@@ -61,19 +62,8 @@ window.addEventListener("keydown", (e) => {
 			break;
 
 		case "space":
-			let inventory = itemsData;
-			//const p = portal[i];
-			/*
-			if (
-				player.position.x <= p.position.x + p.width &&
-				player.position.x + player.width >= p.position.x &&
-				player.position.y + player.height >= p.position.y &&
-				player.position.y <= p.position.y + p.height
-			) {
-				console.log("1");
-				p.play();
 			
-			} */
+
 			if (!player.interactionAsset) return
 			const isIntroDialogue = function(character) {
 				return !player[`${character}Intro`] && player.interactionAsset.name === character;
@@ -84,9 +74,9 @@ window.addEventListener("keydown", (e) => {
 				return !inventory[`${item}`] && player.interactionAsset.name === item
 			}
 
-			const isInInventory = function(item) {
-				console.log(inventory[`${item}`], player.interactionAsset.name === item, 'isInInventory')
-				return inventory[`${item}`] && player.interactionAsset.name === item
+			const isInInventory = function(item, character) {
+				console.log(inventory[`${item}`], player.interactionAsset.name === item, !player[`${character}Intro`],'isInInventory')
+				return inventory[`${item}`] && player.interactionAsset.name === item || (!player[`${character}Intro`] && player.interactionAsset.name === item)
 			}
 
 			const isLackOfItem = function(item, character) {
@@ -130,13 +120,10 @@ window.addEventListener("keydown", (e) => {
 			}
 			console.log(dialogue, 'dialogue', player, 'player', inventory, 'inv')
 			if (
-				isInInventory("flowers") ||
-				isInInventory("chicken") || 
-				isInInventory("apple")
-			) {
-				return
-			}
-			
+				isInInventory("flowers", "frank") ||
+				isInInventory("chicken", "john") || 
+				isInInventory("apple", "babka")
+			) return
 			player.interactionAsset.dialogue = dialogue
 			keys.w.pressed = false
 			keys.s.pressed = false
@@ -144,6 +131,7 @@ window.addEventListener("keydown", (e) => {
 			keys.d.pressed = false
 			console.log(player.interactionAsset)
 			if (!player.babkaIntro && player.interactionAsset.name === "babka") {
+				inventory.receipt = true
 				player.babkaIntro = true
 			}
 			else if (!player.frankIntro && player.interactionAsset.name === "frank") {
@@ -173,6 +161,7 @@ window.addEventListener("keydown", (e) => {
 				inventory.egg = true
 				player.johnQuest = true
 			} 
+			
 			const firstMessage = dialogue[0]
 			document.querySelector('#characterDialogueBox').innerHTML = firstMessage
 			document.querySelector('#characterDialogueBox').style.display = 'flex'
