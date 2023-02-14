@@ -172,7 +172,7 @@ window.addEventListener("keydown", (e) => {
 			else if (player.johnIntro && player.interactionAsset.name === "john" && inventory.chicken) {
 				inventory.egg = true
 				player.johnQuest = true
-			}
+			} 
 			const firstMessage = dialogue[0]
 			document.querySelector('#characterDialogueBox').innerHTML = firstMessage
 			document.querySelector('#characterDialogueBox').style.display = 'flex'
