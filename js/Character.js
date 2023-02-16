@@ -12,9 +12,7 @@ class Character extends Sprite {
 		introDialogue = [""],
 		errorDialogue = [""],
 		endDialogue = [""],
-		outroDialogue = [""],
-		questDone = false,
-		collected = false
+		outroDialogue = [""]
 	}) {
 		super({
 			position,

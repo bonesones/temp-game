@@ -8,10 +8,8 @@ const offset = {
 	x: -735,
 	y: -650,
 };
-// let battleZonesMap = parse2D(battleZonesData);
 let itemZones = parse2D(itemsZonesData);
 let boundaries = [];
-let portal = [];
 let collisionsMap;
 let collisionBlocks;
 let image;
@@ -60,9 +58,9 @@ charactersMap.forEach((row, i) => {
 			},
 			scale: 3,
 			animate: true,
-			introDialogue: ['Hey there boy, what do you need?', '*watches the receipt*', 'I will give you milk if you bring me the flower', 'I like flowers so much...'],
-			errorDialogue: ["I'm waiting for the flower"],
-			endDialogue: ['Thank you boy! Here your milk!', "By the way, there're apples in your receipt...", "You can find apples in the apple orchad!", "You got the milk!"],
+			introDialogue: ['Привет, мальчик, что тебе нужно?', '*смотрит список*', 'Я дам тебе молоко если ты принесёшь мне цветочек...', 'Мне так нравятся цветочки...'],
+			errorDialogue: ["Я жду цветочек..."],
+			endDialogue: ['Спасибо тебе мальчик! Вот твоё молоко!', "Кстати, у тебя в списке есть яблоки...", "Яблоки можешь найти в яблоневом саду!", "Вы получили молоко!"],
 			outroDialogue: ["Apples are in apple orchad"]
 		  })
 		)
@@ -83,10 +81,10 @@ charactersMap.forEach((row, i) => {
 			},
 			scale: 3,
 			animate: true,
-			introDialogue: ['Hey! Where are you going?!', 'You scared my chicken!!!', "Where is it?"],
-			errorDialogue: ["Don't come back without a chicken!!!"],
-			endDialogue: ['Wait, this handwriting...', "Are you came to grandma? You need to bring eggs to her?", "Here, take them, they're yours. I also see you need milk, Frank has it!", "You got the eggs!"],
-			outroDialogue: ['Frank has a milk']
+			introDialogue: ['Эй! Ты куда идёшь?!', 'Ты испугал мою курицу!!!', "Где она??"],
+			errorDialogue: ["Без курицы не возвращайся!!!"],
+			endDialogue: ['Погоди, этот почерк...', "Ты к бабушке приехал? Тебе нужно принести бабушке яйца?", "Вот. бери! Вижу тебе нужно молоко, оно есть у Френка!", "Вы получили яйца!"],
+			outroDialogue: ['У Френка есть молоко!']
 		  })
 		)
 	  }
@@ -106,9 +104,9 @@ charactersMap.forEach((row, i) => {
 			},
 			scale: 3,
 			animate: true,
-			introDialogue: ['Good morning, grandson', "I wanna make you a surprise, but you need to bring me something for it", "You got the receipt!"],
-			errorDialogue: ["You didn't bring all the items"],
-			endDialogue: ['You brought everything!', 'Wait a little bit...'],
+			introDialogue: ['Доброе утро, внучёк!', "Я хочу сделать тебе сюрприз, но для этого ты дллжен кое что принести.", "Вы получили список предметов!"],
+			errorDialogue: ["Ты принёс не все предметы."],
+			endDialogue: ['Ты всё принёс!', 'Подожди немного...'],
 			outroDialogue: ['']
 		  })
 		)
@@ -130,7 +128,7 @@ itemZonesMap.forEach((row, i) => {
 				},
 				image: itemImg,
 				scale: 1,
-				introDialogue: ['You took the flowers!']
+				introDialogue: ['Вы сорвали цветок!']
 			  })
 			)
 		  }
@@ -144,7 +142,7 @@ itemZonesMap.forEach((row, i) => {
 				},
 				image: itemImg,
 				scale: 1,
-				introDialogue: ['You took the apple!']
+				introDialogue: ['Вы подняли яблоки!']
 			  })
 			)
 		  } else if (symbol === 422) {
@@ -157,7 +155,7 @@ itemZonesMap.forEach((row, i) => {
 				  },
 				  image: itemImg,
 				  scale: 1,
-				  introDialogue: ['You took the chicken!']
+				  introDialogue: ['Вы схватили курицу!']
 				})
 			  )
 		  }
@@ -197,8 +195,6 @@ characters.push(
 	})
 )*/
 
-itemZones
-
 const playerDownImage = new Image();
 playerDownImage.src = "./img/playerDown.png";
 
@@ -211,6 +207,21 @@ playerLeftImage.src = "./img/playerLeft.png";
 const playerRightImage = new Image();
 playerRightImage.src = "./img/playerRight.png";
 
+let chickenImg = new Image();
+chickenImg.src = './img/chicken.png'
+
+const chicken = new Sprite({
+	position: {
+		x: 600,
+		y: 510
+	},
+	image: chickenImg,
+	scale: 1,
+	frames: {
+		max: 1,
+		hold: 10,
+	}
+})
 
 const player = new Sprite({
 	position: {
@@ -232,8 +243,7 @@ const player = new Sprite({
 
 const init = () => {
 	boundaries = [];
-	portal = [];
-	
+
 	// player.position.x = canvas.width / 2 - 192 / 4 / 2;
 	// player.position.y = canvas.height / 2 - 68 / 2;
 
@@ -262,37 +272,14 @@ const init = () => {
 		image: foregroundImage,
 	});
 
-	const portalImg = new Image();
-	portalImg.src = "./img/portal.png";
-
-	/* portal.push(
-		new Reaction({
-			position: {
-				x: 177,
-				y: 326,
-			},
-			image: portalImg,
-			frames: {
-				max: 1,
-				hold: 60,
-			},
-			scale: 1,
-			animate: true,
-			onComplete: () => {
-				console.log("OK");
-				levels[1].init();
-			},
-			// dialogue: ["...", "Hey mister, have you seen my Doggochu?"],
-		}),
-	); */
-
-	movables = [background, ...boundaries, ...characters, foreground];
+	movables = [background, ...boundaries, ...characters, foreground, chicken];
 	renderables = [
 		background,
 		...boundaries,
 		...characters,
+		chicken,
 		player,
-		foreground,
+		foreground
 	];
 };
 

@@ -2,6 +2,10 @@ let lastKey = "";
 
 let inventory = itemsData;
 
+document.querySelector('#endScreen').addEventListener('click', () => {
+	location.reload()
+})
+
 window.addEventListener("keydown", (e) => {
 	if (player.isInteracting) {
 		switch (e.key) {
@@ -20,8 +24,22 @@ window.addEventListener("keydown", (e) => {
 			player.isInteracting = false
 			player.interactionAsset.dialogueIndex = 0
 			document.querySelector('#characterDialogueBox').style.display = 'none'
+			if (player.babkaQuest) {
+				document.querySelector('#gameDiv').style.display = 'none'
+				document.querySelector('#endScreen').style.display = 'flex'
+			}
 	
 			break
+		}
+		return
+	}
+	if (player.watchingReceipt) {
+		switch (e.keyCode) {
+			case 67: 
+				player.watchingReceipt = false
+				document.querySelector('#receiptImg').style.display = 'none'
+				document.querySelector('#characterDialogueBox').style.display = 'none'
+				break
 		}
 		return
 	}
@@ -38,6 +56,8 @@ window.addEventListener("keydown", (e) => {
 		move = "right"
 	} else if (e.keyCode === 32) {
 		move = "space"
+	} else if (e.keyCode === 67) {
+		move = "c"
 	}
 
 
@@ -62,34 +82,10 @@ window.addEventListener("keydown", (e) => {
 			break;
 
 		case "space":
-			
-
 			if (!player.interactionAsset) return
-			const isIntroDialogue = function(character) {
-				return !player[`${character}Intro`] && player.interactionAsset.name === character;
-			}
-
-			const notInInventory = function(item) {
-				console.log(!inventory[`${item}`] && player.interactionAsset.name === item, 'notInInventory')
-				return !inventory[`${item}`] && player.interactionAsset.name === item
-			}
-
-			const isInInventory = function(item, character) {
-				console.log(inventory[`${item}`], player.interactionAsset.name === item, !player[`${character}Intro`],'isInInventory')
-				return inventory[`${item}`] && player.interactionAsset.name === item || (!player[`${character}Intro`] && player.interactionAsset.name === item)
-			}
-
-			const isLackOfItem = function(item, character) {
-				return !inventory[item] && player.interactionAsset.name === character && player[`${character}Intro`];
-			}
-
-			const isQuestDone = function(character) {
-				return player[`${character}Quest`] && player.interactionAsset.name === character;
-			}
 
 			// beginning the conversation
 			let dialogue = player.interactionAsset.introDialogue
-			console.log(dialogue)
 			if (
 				isIntroDialogue("babka") || 
 				isIntroDialogue("frank") || 
@@ -118,7 +114,6 @@ window.addEventListener("keydown", (e) => {
 			} else {
 				dialogue = player.interactionAsset.endDialogue
 			}
-			console.log(dialogue, 'dialogue', player, 'player', inventory, 'inv')
 			if (
 				isInInventory("flowers", "frank") ||
 				isInInventory("chicken", "john") || 
@@ -129,33 +124,25 @@ window.addEventListener("keydown", (e) => {
 			keys.s.pressed = false
 			keys.a.pressed = false
 			keys.d.pressed = false
-			console.log(player.interactionAsset)
-			if (!player.babkaIntro && player.interactionAsset.name === "babka") {
-				inventory.receipt = true
-				player.babkaIntro = true
-			}
-			else if (!player.frankIntro && player.interactionAsset.name === "frank") {
-				player.frankIntro = true
-			}
-			else if (!player.johnIntro && player.interactionAsset.name === "john") {
-				player.johnIntro = true
-			}
-			else if (!inventory.flowers && player.interactionAsset.name === "flowers") {
-				inventory.flowers = true
-			}
-			else if (!inventory.chicken && player.interactionAsset.name === "chicken") {
-				inventory.chicken = true
-			}
-			else if (!inventory.apple && player.interactionAsset.name === "apple") {
-				inventory.apple = true
-			}
-			else if (player.frankIntro && player.interactionAsset.name === "frank" && inventory.flowers) {
+
+			
+
+			checkIntroDialogue('babka');
+			checkIntroDialogue('frank');
+			checkIntroDialogue('john');
+
+			checkForItem('chicken');
+			checkForItem('flowers');
+			checkForItem('apple');
+
+			if (player.frankIntro && player.interactionAsset.name === "frank" && inventory.flowers) {
 				inventory.milk = true
 				player.frankQuest = true
 			}
 			else if (player.babkaIntro && player.interactionAsset.name === "babka" && 
 			inventory.egg && inventory.milk && inventory.apple) {
 				player.babkaQuest = true
+				
 			}
 			else if (player.johnIntro && player.interactionAsset.name === "john" && inventory.chicken) {
 				inventory.egg = true
@@ -167,6 +154,22 @@ window.addEventListener("keydown", (e) => {
 			document.querySelector('#characterDialogueBox').style.display = 'flex'
 			player.isInteracting = true
 
+			break;
+		case "c":
+			if (inventory.receipt) {
+				keys.w.pressed = false;
+				keys.s.pressed = false;
+				keys.a.pressed = false;
+				keys.d.pressed = false;
+				document.querySelector('#receiptImg').style.display = 'flex';
+				player.watchingReceipt = true;
+			} else {
+				const firstMessage = ['You need to talk to grandma first!'][0]
+				document.querySelector('#characterDialogueBox').innerHTML = firstMessage
+				document.querySelector('#characterDialogueBox').style.display = 'flex'
+				player.watchingReceipt = true
+			}
+			
 			break;
 	}
 });
@@ -185,6 +188,8 @@ window.addEventListener("keyup", (e) => {
 		move = "right"
 	} else if (e.keyCode === 32) {
 		move = "space"
+	} else if (e.keyCode === 67) {
+		move = "c"
 	}
 
 	switch (move) {

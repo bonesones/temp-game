@@ -9,6 +9,7 @@
 		}
 
 		body {
+			margin: 0;
 			background-color: black;
 		}
 
@@ -27,8 +28,27 @@
 		}
 	</style>
 </head>
-
-<div style="display: inline-block; position: relative">
+<div style="display: none; justify-content: center; align-items: center" id="endScreen">
+	<button style="
+		width: 200px;
+		height: 50px;
+		position: absolute;
+		left: calc(50% + 80px);
+		top: 10px;
+		border: 1px solid #000;
+		">Начать сначала</button>
+	<img src="img/applePie.png" alt="">
+</div>
+<div id='gameDiv' style="display: flex; position: relative; justify-content: center; align-items: center">
+	<div id="receiptImg" style="
+		display: none;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		position:absolute;
+		background-color: rgba(0, 0, 0, 0.75)
+		"><img src="img/receipt.png" alt=""></div>
 	<div id="overlappingDiv" style="
 			background-color: black;
 			position: absolute;
@@ -49,8 +69,7 @@
 			height: 140px;
 			position: absolute;
 			bottom: 0;
-			left: 0;
-			right: 0;
+			width: 1024px;
 			border-top: 4px black solid;
 			display: none;
 			padding: 12px;
@@ -126,7 +145,6 @@
 					display: none;
 					cursor: pointer;
 				">
-				sdkfjlsdajl
 			</div>
 			<div id="attacksBox" style="width: 66.66%; display: grid; grid-template-columns: repeat(2, 1fr)"></div>
 			<div style="
@@ -148,7 +166,6 @@
 	integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
 	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="data/audio.js"></script>
-<script src="data/battleZones.js"></script>
 <script src="data/collisions.js"></script>
 <script src="data/attacks.js"></script>
 <script src="data/monsters.js"></script>
@@ -159,8 +176,8 @@
 <script src="js/CollisionBlock.js"></script>
 <script src="js/Sprite.js"></script>
 <script src="js/Character.js"></script>
-<script src="js/Reaction.js"></script>
 
+<script src="js/eventConditions.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/eventListeners.js"></script>
 <script src="index.js"></script>
