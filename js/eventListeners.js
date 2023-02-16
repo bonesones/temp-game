@@ -45,7 +45,12 @@ window.addEventListener("keydown", (e) => {
 				player.watchingReceipt = false
 				document.querySelector('#receiptImg').style.display = 'none'
 				document.querySelector('#characterDialogueBox').style.display = 'none'
-				break
+				break;
+			case 27: 
+				player.watchingReceipt = false
+				document.querySelector('#receiptImg').style.display = 'none'
+				document.querySelector('#characterDialogueBox').style.display = 'none'
+				break;
 		}
 		return
 	}
