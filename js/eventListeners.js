@@ -19,11 +19,17 @@ window.addEventListener("keydown", (e) => {
 				console.log(dialogue.length)
 			  	return
 			}
+			
 
 			// finish conversation
 			player.isInteracting = false
 			player.interactionAsset.dialogueIndex = 0
 			document.querySelector('#characterDialogueBox').style.display = 'none'
+			if (player.clown) {
+				player.clown = false;
+				document.querySelector('#clownScreen').style.display = 'none'
+				document.querySelector('#characterDialogueBox').style.color = 'black'
+			}
 			if (player.babkaQuest) {
 				document.querySelector('#gameDiv').style.display = 'none'
 				document.querySelector('#endScreen').style.display = 'flex'
@@ -111,6 +117,8 @@ window.addEventListener("keydown", (e) => {
 				isQuestDone("john")
 			) {
 				dialogue = player.interactionAsset.outroDialogue
+			} else if (player.interactionAsset.name === 'clown') {
+				dialogue
 			} else {
 				dialogue = player.interactionAsset.endDialogue
 			}

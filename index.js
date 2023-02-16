@@ -158,7 +158,19 @@ itemZonesMap.forEach((row, i) => {
 				  introDialogue: ['Вы схватили курицу!']
 				})
 			  )
-		  }
+		  } else if (symbol === 451) {
+			characters.push(
+				new Character({
+					name: "clown",
+					position: {
+						x: j * boundWidth + offset.x,
+						y: i * boundHeight + offset.y
+					},
+					image: itemImg,
+					scale: 1,
+					introDialogue: ['ДОБРО ПОЖАЛОВАТЬ НА ТЁМНЫЙ КАРНАВАЛ, БРАТЮНЬ. :o)']	
+				})
+			)}
 	})
 })
 /*characters.push(

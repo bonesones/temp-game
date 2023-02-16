@@ -32,4 +32,10 @@ function checkForItem(item) {
         inventory[`${item}`] = true
     }
     if (inventory.chicken) chicken.opacity = 0;
+    if (player.interactionAsset.name === 'clown') {
+        player.isInteracting = true;
+        document.querySelector('#clownScreen').style.display = 'flex';
+        document.querySelector('#characterDialogueBox').style.color = 'purple'
+        player.clown = true;
+    }
 }
