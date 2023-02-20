@@ -7,7 +7,7 @@ class Sprite {
 		sprites,
 		animate = false,
 		rotation = 0,
-		scale = 1,
+		scale = 1
 	}) {
 		this.position = position;
 		this.image = new Image();
@@ -24,7 +24,6 @@ class Sprite {
 
 		this.rotation = rotation;
 		this.scale = scale;
-
 	}
 
 	draw() {

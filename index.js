@@ -104,7 +104,7 @@ charactersMap.forEach((row, i) => {
 			},
 			scale: 3,
 			animate: true,
-			introDialogue: ['Доброе утро, внучёк!', "Я хочу сделать тебе сюрприз, но для этого ты должен кое что принести.", "Вы получили список предметов!"],
+			introDialogue: ['Доброе утро, внучёк!', "Я хочу сделать тебе сюрприз, но для этого ты должен кое что принести.", "Вы получили список предметов! (нажмите C для просмотра)"],
 			errorDialogue: ["Ты принёс не все предметы."],
 			endDialogue: ['Ты всё принёс!', 'Подожди немного...'],
 			outroDialogue: ['']
@@ -168,44 +168,11 @@ itemZonesMap.forEach((row, i) => {
 					},
 					image: itemImg,
 					scale: 1,
-					introDialogue: ['ДОБРО ПОЖАЛОВАТЬ НА ТЁМНЫЙ КАРНАВАЛ, БРАТЮНЬ. :o)']	
+					introDialogue: ['ДОБРО ПОЖАЛОВАТЬ НА ТЁМНЫЙ КАРНАВАЛ, БРАТЮНЬ. :0)']	
 				})
 			)}
 	})
 })
-/*characters.push(
-	new Character({
-	position: {
-		x: 250,
-		y: 250
-	},
-	image: villagerImg,
-	frames: {
-		max: 4,
-		hold: 60
-	},
-	scale: 3,
-	animate: true,
-	dialogue: ['...', 'Hey mister, have you seen my Doggochu?']
-	})
-)
-
-characters.push(
-	new Character({
-	position: {
-		x: 200,
-		y: 250
-	},
-	image: oldManImg,
-	frames: {
-		max: 4,
-		hold: 90
-	},
-	scale: 3,
-	animate: true,
-	dialogue: ['My bones hurt.']
-	})
-)*/
 
 const playerDownImage = new Image();
 playerDownImage.src = "./img/playerDown.png";
@@ -250,14 +217,11 @@ const player = new Sprite({
 		left: playerLeftImage,
 		right: playerRightImage,
 		down: playerDownImage,
-	},
+	}
 });
-
+console.log(player)
 const init = () => {
 	boundaries = [];
-
-	// player.position.x = canvas.width / 2 - 192 / 4 / 2;
-	// player.position.y = canvas.height / 2 - 68 / 2;
 
 	collisionsMap = parse2D(collisions_level1);
 	collisionBlocks = createObjectsFrom2D(collisionsMap, charactersMap);
@@ -318,7 +282,6 @@ function animate() {
 
 	let moving = true;
 	player.animate = false;
-
 	if (keys.w.pressed && lastKey === "w") {
 		player.animate = true;
 		player.image = player.sprites.up;
@@ -349,10 +312,12 @@ function animate() {
 			}
 		}
 
-		if (moving)
+		if (moving) {
 			movables.forEach((movable) => {
 				movable.position.y += 3;
 			});
+		}
+			
 	} else if (keys.a.pressed && lastKey === "a") {
 		player.animate = true;
 		player.image = player.sprites.left;
@@ -383,10 +348,11 @@ function animate() {
 			}
 		}
 
-		if (moving)
+		if (moving) {
 			movables.forEach((movable) => {
 				movable.position.x += 3;
 			});
+		}
 	} else if (keys.s.pressed && lastKey === "s") {
 		player.animate = true;
 		player.image = player.sprites.down;
@@ -417,10 +383,12 @@ function animate() {
 			}
 		}
 
-		if (moving)
+		if (moving) {
 			movables.forEach((movable) => {
 				movable.position.y -= 3;
 			});
+		}
+			
 	} else if (keys.d.pressed && lastKey === "d") {
 		player.animate = true;
 		player.image = player.sprites.right;
@@ -451,20 +419,12 @@ function animate() {
 			}
 		}
 
-		if (moving)
+		if (moving) {
 			movables.forEach((movable) => {
 				movable.position.x -= 3;
 			});
+		}
 	}
 }
 init();
 animate();
-
-/* const btn = document.querySelector("button");
-
-btn.addEventListener("click", function () {
-	console.log("button");
-	lvl++;
-	if (lvl % 2 != 0) levels[1].init();
-	else levels[0].init();
-}); */

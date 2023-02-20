@@ -2,11 +2,52 @@ let lastKey = "";
 
 let inventory = itemsData;
 
+let quests = questData;
+
 document.querySelector('#endScreen').addEventListener('click', () => {
+	localStorage.clear();
 	location.reload()
 })
 
+const checkQuests = function() {
+	if(
+		(quests.babkaIntro && !quests.babkaQuest) ||
+		(quests.frankIntro && !quests.frankIntro) ||
+		(quests.johnIntro && !quests.johnQuest)
+	) {
+		let babkaQuest = quests.babkaIntro && !quests.babkaQuest ? "Сюрприз" : '';
+		let johnQuest = quests.johnIntro && !quests.babkaQuest ? "Курица" : '';
+		let frankQuest = quests.frankIntro && !quests.frankQuest ? "Цветы" : '';
+		let unfinishedQuests = [];
+		if (babkaQuest) unfinishedQuests.push(babkaQuest)
+		if (johnQuest) unfinishedQuests.push(johnQuest)
+		if (frankQuest) unfinishedQuests.push(frankQuest)
+		let unfinishedQuestsDialogue = '';
+		for (let i = 0; i < unfinishedQuests.length - 1; i++) {
+			if (unfinishedQuests[i]) unfinishedQuestsDialogue += unfinishedQuests[i] + ', '
+		}
+		unfinishedQuestsDialogue += unfinishedQuests[unfinishedQuests.length - 1]
+		
+
+		player.reloadedDialogue = true;
+		document.querySelector("#characterDialogueBox").innerHTML = `У вас выполнены не все квесты: ${unfinishedQuestsDialogue}`;
+		document.querySelector('#characterDialogueBox').style.display = 'flex';
+	}
+}
+
+
+
+window.onload = function() {
+	let loaded = localStorage.getItem('loaded');
+	if(loaded) {
+		checkQuests()
+	} else {
+		localStorage.setItem('loaded', "true")
+	}
+}
+
 window.addEventListener("keydown", (e) => {
+
 	if (player.isInteracting) {
 		switch (e.key) {
 		  case ' ':
@@ -16,10 +57,8 @@ window.addEventListener("keydown", (e) => {
 			if (dialogueIndex <= dialogue.length - 1) {
 				document.querySelector('#characterDialogueBox').innerHTML =
 				player.interactionAsset.dialogue[dialogueIndex]
-				console.log(dialogue.length)
 			  	return
 			}
-			
 
 			// finish conversation
 			player.isInteracting = false
@@ -30,7 +69,7 @@ window.addEventListener("keydown", (e) => {
 				document.querySelector('#clownScreen').style.display = 'none'
 				document.querySelector('#characterDialogueBox').style.color = 'black'
 			}
-			if (player.babkaQuest) {
+			if (quests.babkaQuest) {
 				document.querySelector('#gameDiv').style.display = 'none'
 				document.querySelector('#endScreen').style.display = 'flex'
 			}
@@ -51,6 +90,16 @@ window.addEventListener("keydown", (e) => {
 				document.querySelector('#receiptImg').style.display = 'none'
 				document.querySelector('#characterDialogueBox').style.display = 'none'
 				break;
+		}
+		return
+	}
+	if (player.reloadedDialogue) {
+		switch (e.key) {
+		  case ' ':
+			player.reloadedDialogue = false
+			document.querySelector('#characterDialogueBox').style.display = 'none'
+	
+			break
 		}
 		return
 	}
@@ -99,8 +148,8 @@ window.addEventListener("keydown", (e) => {
 			let dialogue = player.interactionAsset.introDialogue
 			if (
 				isIntroDialogue("babka") || 
-				isIntroDialogue("frank") || 
-				isIntroDialogue("john") ||
+				(isIntroDialogue("john") && quests.babkaIntro) || 
+				(isIntroDialogue("frank") && quests.babkaIntro) ||
 				notInInventory("flowers") ||
 				notInInventory("chicken") ||
 				notInInventory("apple")
@@ -124,7 +173,13 @@ window.addEventListener("keydown", (e) => {
 				dialogue = player.interactionAsset.outroDialogue
 			} else if (player.interactionAsset.name === 'clown') {
 				dialogue
-			} else {
+			} else if (
+				(isIntroDialogue("frank") && !quests.babkaIntro) || 
+				(isIntroDialogue("john") && !quests.babkaIntro)
+			) {
+				dialogue = ['Сначала поговори с бабушкой!']
+			}
+			 else {
 				dialogue = player.interactionAsset.endDialogue
 			}
 			if (
@@ -138,8 +193,6 @@ window.addEventListener("keydown", (e) => {
 			keys.a.pressed = false
 			keys.d.pressed = false
 
-			
-
 			checkIntroDialogue('babka');
 			checkIntroDialogue('frank');
 			checkIntroDialogue('john');
@@ -148,18 +201,23 @@ window.addEventListener("keydown", (e) => {
 			checkForItem('flowers');
 			checkForItem('apple');
 
-			if (player.frankIntro && player.interactionAsset.name === "frank" && inventory.flowers) {
+			if (quests.frankIntro && player.interactionAsset.name === "frank" && inventory.flowers) {
+				localStorage.setItem('milk', 'true')
 				inventory.milk = true
-				player.frankQuest = true
+				localStorage.setItem('frankQuest', 'true')
+				quests.frankQuest = true
 			}
-			else if (player.babkaIntro && player.interactionAsset.name === "babka" && 
+			else if (quests.babkaIntro && player.interactionAsset.name === "babka" && 
 			inventory.egg && inventory.milk && inventory.apple) {
-				player.babkaQuest = true
+				localStorage.setItem('babkaQuest', "true")
+				quests.babkaQuest = true
 				
 			}
-			else if (player.johnIntro && player.interactionAsset.name === "john" && inventory.chicken) {
+			else if (quests.johnIntro && player.interactionAsset.name === "john" && inventory.chicken) {
+				localStorage.setItem('egg', 'true')
 				inventory.egg = true
-				player.johnQuest = true
+				localStorage.setItem('johnQuest', 'true')
+				quests.johnQuest = true
 			} 
 			
 			const firstMessage = dialogue[0]
@@ -177,7 +235,7 @@ window.addEventListener("keydown", (e) => {
 				document.querySelector('#receiptImg').style.display = 'flex';
 				player.watchingReceipt = true;
 			} else {
-				const firstMessage = ['You need to talk to grandma first!'][0]
+				const firstMessage = 'Сначала поговори с бабушкой!'
 				document.querySelector('#characterDialogueBox').innerHTML = firstMessage
 				document.querySelector('#characterDialogueBox').style.display = 'flex'
 				player.watchingReceipt = true
